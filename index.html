@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUPREME ELECTRICAL WORKS AND ELECTRICAL REWINDER ESTIMATE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#12263A; --paper:#F7F9FA; --line:#C9D3DB; --gold:#E0A400; --green:#0B6E3F; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#E3EAEF; color:var(--ink);
+    font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif; padding:20px 12px 150px; }
+  .sheet { max-width:940px; margin:0 auto; background:var(--paper); border:1px solid var(--line);
+    border-top:6px solid var(--gold); border-radius:4px; }
+  header { padding:24px 20px 8px; overflow:auto; }
+  .meta .wide { grid-column:1 / -1; }
+  h1 { margin:0; font-size:24px; line-height:1.25; font-weight:700; letter-spacing:-0.01em; }
+  header p { margin:6px 0 0; color:#4B6072; font-size:14px; }
+  .top-btn { float:right; margin-left:12px; }
+  .meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; padding:16px 20px; }
+  .meta label { font-size:13px; font-weight:500; }
+  .meta input { display:block; width:100%; margin-top:4px; padding:10px 12px; border:1px solid var(--line);
+    background:#fff; border-radius:4px; font:inherit; color:var(--ink); }
+  .meta input:focus { outline:none; border-color:var(--ink); }
+  .scroll { overflow-x:auto; padding:0 20px; }
+  table { width:100%; min-width:720px; border-collapse:collapse; font-size:15px; }
+  th { text-align:left; padding:12px 8px; font-weight:600; font-size:13px; color:#fff; background:var(--ink); white-space:nowrap; }
+  th.r, td.r { text-align:right; }
+  tbody tr { border-bottom:1px solid var(--line); }
+  tbody tr:hover { background:#F0F5F8; }
+  td { padding:0; }
+  td.idx { padding:0 8px; color:#6B7F90; }
+  td input { width:100%; padding:10px 8px; border:none; border-bottom:1px solid transparent; background:transparent;
+    font:inherit; color:var(--ink); outline:none; }
+  td input.n { text-align:right; font-variant-numeric:tabular-nums; }
+  td input:focus { border-bottom-color:var(--gold); background:#FFF9E5; }
+  td.amt { text-align:right; padding:0 8px; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .del { border:none; background:transparent; color:#9A3B3B; font-size:20px; cursor:pointer; padding:6px 8px; line-height:1; }
+  tfoot td { padding:10px 8px; font-weight:600; border-top:1px solid var(--line); }
+  tfoot .label { text-align:right; }
+  tfoot .val { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  tfoot tr.grand td { border-top:2px solid var(--ink); padding:16px 8px; font-weight:700; }
+  tfoot tr.grand .label { font-size:16px; }
+  tfoot tr.grand .val { font-size:20px; color:var(--green); }
+  .work-ctl { display:flex; gap:6px; justify-content:flex-end; }
+  .work-ctl select, .work-ctl input { font:inherit; color:var(--ink); border:1px solid var(--line); background:#fff;
+    border-radius:4px; padding:8px; }
+  .work-ctl select { width:auto; }
+  .work-ctl input { width:100px; text-align:right; }
+  .work-ctl select:focus, .work-ctl input:focus { outline:none; border-color:var(--ink); background:#FFF9E5; }
+  .empty { padding:24px; text-align:center; color:#4B6072; }
+  .actions { padding:16px 20px 24px; display:flex; gap:12px; flex-wrap:wrap; }
+  button { font:inherit; cursor:pointer; border-radius:4px; }
+  button:focus-visible, .del:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+  .btn { padding:12px 20px; font-weight:600; font-size:15px; border:none; }
+  .gold { background:var(--gold); color:var(--ink); }
+  .dark { background:var(--ink); color:#fff; }
+  .ghost { background:transparent; color:var(--ink); border:1px solid var(--ink); font-weight:500; }
+  .small { padding:10px 16px; font-size:14px; }
+  .bar { position:fixed; left:0; right:0; bottom:0; background:var(--ink); color:#fff; padding:10px 16px; z-index:10;
+    box-shadow:0 -2px 8px rgba(0,0,0,.2); }
+  .bar-inner { max-width:940px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .bar small { display:block; font-size:12px; opacity:.8; }
+  .bar strong { font-size:18px; font-variant-numeric:tabular-nums; }
+  .bar-btns { display:flex; gap:8px; }
+  .bar .ghost { color:#fff; border-color:#fff; }
+  .note { max-width:940px; margin:8px auto 0; font-size:13px; line-height:1.5; }
+  .note a { color:var(--gold); font-weight:700; }
+  .plan { margin:10px 0 0; font-size:13px; }
+  .chip { display:inline-block; padding:4px 10px; border-radius:999px; font-weight:600; font-size:12px; border:none; }
+  .chip.free { background:#E8EDF1; color:#34495E; }
+  .chip.pro { background:#DDF3E6; color:var(--green); }
+  .chip.warn { background:#FFF1CC; color:#7A5600; }
+  .linkbtn { background:none; border:none; color:var(--ink); text-decoration:underline; font-size:13px; padding:0 4px; font-weight:600; }
+  .overlay { position:fixed; inset:0; background:rgba(18,38,58,.65); z-index:50; display:flex; align-items:center;
+    justify-content:center; padding:16px; }
+  .overlay[hidden] { display:none; }
+  .modal { background:#fff; border-radius:8px; max-width:420px; width:100%; padding:24px; border-top:6px solid var(--gold);
+    max-height:92vh; overflow:auto; }
+  .modal h2 { margin:0 0 4px; font-size:22px; }
+  .price { font-size:32px; font-weight:700; margin:8px 0 2px; }
+  .price span { font-size:15px; font-weight:500; color:#4B6072; }
+  .modal ul { margin:12px 0 16px; padding-left:20px; line-height:1.6; font-size:15px; }
+  .modal label { font-size:13px; font-weight:500; display:block; }
+  .modal input { display:block; width:100%; margin-top:4px; padding:12px; font:inherit; border:1px solid var(--line);
+    border-radius:4px; }
+  .modal input:focus { outline:none; border-color:var(--ink); }
+  .modal .err { color:#9A3B3B; font-size:13px; min-height:18px; margin:8px 0 0; }
+  .modal .row { display:flex; gap:10px; margin-top:8px; }
+  .modal .row .btn { flex:1; }
+  .modal .fine { font-size:12px; color:#4B6072; margin:14px 0 0; line-height:1.5; }
+  .sr { position:absolute; left:-9999px; }
+  @media print {
+    @page { size:A4; margin:14mm; }
+    body { background:#fff; padding:0; }
+    .sheet { border:none; border-top:4px solid var(--gold); max-width:none; }
+    .no-print { display:none !important; }
+    .overlay { display:none !important; }
+    .scroll { overflow:visible; }
+    table { min-width:0; }
+    th { background:var(--ink) !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    tbody tr:hover { background:transparent; }
+    tr { break-inside:avoid; }
+    input { border:none !important; background:transparent !important; appearance:none; -moz-appearance:textfield; }
+    .meta input { padding-left:0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <button class="btn dark small top-btn no-print" id="pdfTop">Download PDF</button>
+    <h1>SUPREME ELECTRICAL WORKS AND ELECTRICAL REWINDER ESTIMATE</h1>
+    <p>All amounts in Ghana cedis (GH₵). Amount = Quantity × Rate, less depreciation. Workmanship is added to the subtotal.</p>
+  </header>
+
+  <section class="meta">
+    <label>Project <input id="project" placeholder="e.g. 3-bedroom house wiring"></label>
+    <label>Client <input id="client" placeholder="Client name"></label>
+    <label>Date <input id="date" type="date"></label>
+  </section>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th>Item description</th>
+          <th class="r" style="width:120px">Depreciation (%)</th>
+          <th class="r" style="width:80px">Quantity</th>
+          <th class="r" style="width:110px">Rate (GH₵)</th>
+          <th class="r" style="width:130px">Amount (GH₵)</th>
+          <th class="no-print" style="width:40px"><span class="sr">Remove</span></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="label">Subtotal (items)</td>
+          <td class="val" id="subCell">GH₵ 0.00</td>
+          <td class="no-print"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="label">Workmanship</td>
+          <td colspan="3">
+            <div class="work-ctl">
+              <select id="workType" aria-label="Workmanship type">
+                <option value="pct">% of subtotal</option>
+                <option value="fixed">Fixed GH₵</option>
+              </select>
+              <input id="workVal" type="number" min="0" step="any" inputmode="decimal" value="30" aria-label="Workmanship value">
+            </div>
+          </td>
+          <td class="val" id="workCell">GH₵ 0.00</td>
+          <td class="no-print"></td>
+        </tr>
+        <tr class="grand">
+          <td colspan="5" class="label">Total amount</td>
+          <td class="val" id="totalCell">GH₵ 0.00</td>
+          <td class="no-print"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="actions no-print">
+    <button class="btn gold" id="add">Add item</button>
+    <button class="btn ghost" id="clear">Clear all items</button>
+  </div>
+</div>
+
+<div class="bar no-print">
+  <div class="bar-inner">
+    <div><small>Total amount</small><strong id="barTotal">GH₵ 0.00</strong></div>
+    <div class="bar-btns">
+      <button class="btn ghost" id="print">Print</button>
+      <button class="btn gold" id="pdf">Download PDF</button>
+    </div>
+  </div>
+  <p class="note" id="note" hidden></p>
+</div>
+
+<script>
+// ---------- PDF generator (no libraries, works inside the preview) ----------
+const esc = (t) =>
+  String(t)
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, "?")
+    .replace(/\\/g, "\\\\")
+    .replace(/\(/g, "\\(")
+    .replace(/\)/g, "\\)");
+
+function makePdf({ project, client, date, rows, subtotal, workLabel, work, total }) {
+  const W = 595, H = 842, M = 40;
+  const INK = [0.07, 0.15, 0.23], GOLD = [0.88, 0.64, 0], GREEN = [0.04, 0.43, 0.25];
+  const GREY = [0.42, 0.5, 0.56], LINE = [0.78, 0.83, 0.86];
+  const pages = [];
+  let ops = [];
+  let y = 0;
+
+  const col = (c) => `${c[0]} ${c[1]} ${c[2]}`;
+  const tw = (t, size, bold) => {
+    let n = 0;
+    for (const ch of String(t)) {
+      n += /[0-9]/.test(ch) ? 0.556 : /[.,: ]/.test(ch) ? 0.278 : /[()]/.test(ch) ? 0.333 : /[A-Z]/.test(ch) ? 0.68 : 0.52;
+    }
+    return n * size * (bold ? 1.06 : 1);
+  };
+  const T = (x, yy, t, size, o = {}) => {
+    const { bold = false, color = [0, 0, 0], right = false } = o;
+    const xx = right ? x - tw(t, size, bold) : x;
+    ops.push(`BT /F${bold ? 2 : 1} ${size} Tf ${col(color)} rg ${xx.toFixed(2)} ${yy.toFixed(2)} Td (${esc(t)}) Tj ET`);
+  };
+  const rect = (x, yy, w, h, c) => ops.push(`${col(c)} rg ${x} ${yy} ${w} ${h} re f`);
+  const hline = (yy, x1, x2, c, wd) => ops.push(`${col(c)} RG ${wd} w ${x1} ${yy} m ${x2} ${yy} l S`);
+  const wrap = (t, maxW, size) => {
+    const words = String(t || "").split(/\s+/).filter(Boolean);
+    const lines = [];
+    let cur = "";
+    for (const w of words) {
+      const test = cur ? cur + " " + w : w;
+      if (!cur || tw(test, size, false) <= maxW) cur = test;
+      else { lines.push(cur); cur = w; }
+    }
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [""];
+  };
+  const newPage = () => { ops = []; pages.push(ops); };
+  const tableHeader = () => {
+    rect(M, y - 18, W - 2 * M, 24, INK);
+    const ty = y - 11;
+    const o = { bold: true, color: [1, 1, 1] };
+    T(M + 6, ty, "#", 9, o);
+    T(M + 26, ty, "Item description", 9, o);
+    T(335, ty, "Depr. (%)", 9, { ...o, right: true });
+    T(395, ty, "Quantity", 9, { ...o, right: true });
+    T(465, ty, "Rate (GHS)", 9, { ...o, right: true });
+    T(W - M - 6, ty, "Amount (GHS)", 9, { ...o, right: true });
+    y -= 24;
+  };
+
+  // page 1 heading
+  newPage();
+  rect(0, H - 10, W, 10, GOLD);
+  T(M, H - 46, "SUPREME ELECTRICAL WORKS AND", 17, { bold: true, color: INK });
+  T(M, H - 66, "ELECTRICAL REWINDER ESTIMATE", 17, { bold: true, color: INK });
+  T(M, H - 84, "All amounts in Ghana cedis (GHS). Amount = Quantity x Rate, less depreciation. Workmanship added to subtotal.", 9, { color: GREY });
+  T(M, H - 110, "Project:", 10, { bold: true });
+  T(M + 50, H - 110, project || "-", 10);
+  T(M, H - 126, "Client:", 10, { bold: true });
+  T(M + 50, H - 126, client || "-", 10);
+  T(M, H - 142, "Date:", 10, { bold: true });
+  T(M + 50, H - 142, date || "-", 10);
+  y = H - 166;
+  tableHeader();
+
+  rows.forEach((r, i) => {
+    const lines = wrap(r.desc, 205, 10);
+    const h = lines.length * 12 + 8;
+    if (y - h < 80) {
+      newPage();
+      y = H - 50;
+      tableHeader();
+    }
+    const base = y - 14;
+    T(M + 6, base, String(i + 1), 10, { color: GREY });
+    lines.forEach((ln, k) => T(M + 26, base - k * 12, ln, 10));
+    T(335, base, String(Number(r.dep) || 0), 10, { right: true });
+    T(395, base, String(Number(r.qty) || 0), 10, { right: true });
+    T(465, base, fmt(Number(r.rate) || 0), 10, { right: true });
+    T(W - M - 6, base, fmt(r.amount), 10, { right: true, bold: true });
+    y -= h;
+    hline(y, M, W - M, LINE, 0.6);
+  });
+
+  if (y < 140) {
+    newPage();
+    y = H - 50;
+  }
+  hline(y - 4, M, W - M, LINE, 0.6);
+  T(440, y - 22, "Subtotal (items)", 10, { right: true });
+  T(W - M - 6, y - 22, "GHS " + fmt(subtotal), 10, { right: true });
+  T(440, y - 40, workLabel, 10, { right: true });
+  T(W - M - 6, y - 40, "GHS " + fmt(work), 10, { right: true });
+  hline(y - 52, M, W - M, INK, 1.5);
+  T(440, y - 76, "Total amount", 12, { bold: true, right: true });
+  T(W - M - 6, y - 76, "GHS " + fmt(total), 14, { bold: true, color: GREEN, right: true });
+
+  // footers
+  pages.forEach((pg, i) => {
+    ops = pg;
+    const label = `Page ${i + 1} of ${pages.length}`;
+    T(W / 2 - tw(label, 8, false) / 2, 24, label, 8, { color: GREY });
+  });
+
+  // assemble PDF
+  const objs = [];
+  objs.push("<< /Type /Catalog /Pages 2 0 R >>");
+  const kids = pages.map((_, i) => `${5 + 2 * i} 0 R`).join(" ");
+  objs.push(`<< /Type /Pages /Kids [${kids}] /Count ${pages.length} >>`);
+  objs.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+  objs.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+  pages.forEach((pg, i) => {
+    const data = pg.join("\n");
+    objs.push(
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6 + 2 * i} 0 R >>`
+    );
+    objs.push(`<< /Length ${data.length} >>\nstream\n${data}\nendstream`);
+  });
+
+  let out = "%PDF-1.4\n";
+  const offsets = [];
+  objs.forEach((o, i) => {
+    offsets.push(out.length);
+    out += `${i + 1} 0 obj\n${o}\nendobj\n`;
+  });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n`;
+  out += offsets.map((o) => String(o).padStart(10, "0") + " 00000 n \n").join("");
+  out += `trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+
+  const bytes = new Uint8Array(out.length);
+  for (let i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+  return bytes;
+}
+
+
+
+const fmt = (n) =>
+  new Intl.NumberFormat("en-GH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(isNaN(n) ? 0 : n);
+
+let nextId = 6;
+let rows = [
+  { id: 1, desc: "2.5mm² twin & earth cable (100m roll)", dep: 0, qty: 3, rate: 850 },
+  { id: 2, desc: "13A double socket outlet", dep: 0, qty: 12, rate: 65 },
+  { id: 3, desc: "1-gang 2-way light switch", dep: 0, qty: 10, rate: 28 },
+  { id: 4, desc: "Distribution board, 12-way", dep: 5, qty: 1, rate: 720 },
+  { id: 5, desc: "Labour: wiring and installation (per point)", dep: 0, qty: 30, rate: 90 },
+];
+
+const $ = (id) => document.getElementById(id);
+const tbody = $("rows");
+$("date").value = new Date().toISOString().slice(0, 10);
+
+function amountOf(x) {
+  const dep = Math.min(Math.max(Number(x.dep) || 0, 0), 100);
+  return (Number(x.qty) || 0) * (Number(x.rate) || 0) * (1 - dep / 100);
+}
+function subtotalOf() {
+  return rows.reduce((s, x) => s + amountOf(x), 0);
+}
+function workOf() {
+  const v = Number($("workVal").value) || 0;
+  return $("workType").value === "pct" ? (subtotalOf() * v) / 100 : v;
+}
+function workLabel() {
+  const v = Number($("workVal").value) || 0;
+  return $("workType").value === "pct" ? "Workmanship (" + v + "% of subtotal)" : "Workmanship (fixed)";
+}
+function totalOf() {
+  return subtotalOf() + workOf();
+}
+function updateTotal() {
+  $("subCell").textContent = "GH₵ " + fmt(subtotalOf());
+  $("workCell").textContent = "GH₵ " + fmt(workOf());
+  const t = "GH₵ " + fmt(totalOf());
+  $("totalCell").textContent = t;
+  $("barTotal").textContent = t;
+}
+$("workType").addEventListener("change", updateTotal);
+$("workVal").addEventListener("input", updateTotal);
+
+function cellInput(row, field, numeric, label, attrs) {
+  const td = document.createElement("td");
+  const inp = document.createElement("input");
+  inp.value = row[field];
+  inp.setAttribute("aria-label", label);
+  if (numeric) {
+    inp.type = "number";
+    inp.className = "n";
+    inp.min = "0";
+    inp.step = "any";
+    inp.inputMode = "decimal";
+    if (field === "dep") inp.max = "100";
+  } else {
+    inp.placeholder = "Describe the item or work";
+  }
+  inp.addEventListener("input", () => {
+    row[field] = inp.value;
+    if (row.amtCell) row.amtCell.textContent = fmt(amountOf(row));
+    updateTotal();
+  });
+  td.appendChild(inp);
+  return td;
+}
+
+function renderRows() {
+  tbody.innerHTML = "";
+  if (rows.length === 0) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.className = "empty";
+    td.textContent = "No items yet. Add your first item below.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
+  rows.forEach((row, i) => {
+    const tr = document.createElement("tr");
+    const idx = document.createElement("td");
+    idx.className = "idx";
+    idx.textContent = i + 1;
+    tr.appendChild(idx);
+    tr.appendChild(cellInput(row, "desc", false, "Description, item " + (i + 1)));
+    tr.appendChild(cellInput(row, "dep", true, "Depreciation percent, item " + (i + 1)));
+    tr.appendChild(cellInput(row, "qty", true, "Quantity, item " + (i + 1)));
+    tr.appendChild(cellInput(row, "rate", true, "Rate, item " + (i + 1)));
+    const amt = document.createElement("td");
+    amt.className = "amt";
+    amt.textContent = fmt(amountOf(row));
+    row.amtCell = amt;
+    tr.appendChild(amt);
+    const d = document.createElement("td");
+    d.className = "no-print";
+    d.style.textAlign = "center";
+    const btn = document.createElement("button");
+    btn.className = "del";
+    btn.textContent = "×";
+    btn.setAttribute("aria-label", "Remove item " + (i + 1));
+    btn.addEventListener("click", () => {
+      rows = rows.filter((r) => r.id !== row.id);
+      renderRows();
+    });
+    d.appendChild(btn);
+    tr.appendChild(d);
+    tbody.appendChild(tr);
+  });
+  updateTotal();
+}
+
+$("add").addEventListener("click", () => {
+  rows.push({ id: nextId++, desc: "", dep: 0, qty: 1, rate: 0 });
+  renderRows();
+  const inputs = tbody.querySelectorAll("tr:last-child input");
+  if (inputs[0]) inputs[0].focus();
+});
+$("clear").addEventListener("click", () => {
+  rows = [];
+  renderRows();
+});
+
+
+function downloadPdf() {
+  const note = $("note");
+  try {
+    const bytes = makePdf({
+      project: $("project").value,
+      client: $("client").value,
+      date: $("date").value,
+      rows: rows.map((x) => ({ desc: x.desc, dep: x.dep, qty: x.qty, rate: x.rate, amount: amountOf(x) })),
+      subtotal: subtotalOf(),
+      workLabel: workLabel(),
+      work: workOf(),
+      total: totalOf(),
+    });
+    const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Supreme-Electrical-Works-Estimate.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    note.hidden = false;
+    note.innerHTML = 'PDF ready. <a href="' + url + '" download="Supreme-Electrical-Works-Estimate.pdf" target="_blank" rel="noopener">Tap here if the download did not start</a>';
+  } catch (e) {
+    note.hidden = false;
+    note.textContent = "Could not create the PDF. Check that every quantity and rate is a number, then try again.";
+  }
+}
+$("pdf").addEventListener("click", downloadPdf);
+$("pdfTop").addEventListener("click", downloadPdf);
+$("print").addEventListener("click", () => window.print());
+
+renderRows();
+
+</script>
+</body>
+</html>
